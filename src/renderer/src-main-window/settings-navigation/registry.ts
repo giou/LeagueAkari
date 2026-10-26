@@ -627,6 +627,40 @@ const targetDefinitions = [
     descriptionKey: 'automation.gameflow.autoAcceptDelaySeconds.description'
   },
   {
+    id: 'automation.gameflow.ready-check.notification',
+    route: { name: 'automation', section: 'auto-gameflow' },
+    labelKey: 'automation.gameflow.sections.readyCheckNotification',
+    searchable: false
+  },
+  {
+    id: 'automation.gameflow.ready-check.notification.enabled',
+    route: { name: 'automation', section: 'auto-gameflow' },
+    parentId: 'automation.gameflow.ready-check.notification',
+    labelKey: 'automation.gameflow.autoAcceptNotifyEnabled.label',
+    descriptionKey: 'automation.gameflow.autoAcceptNotifyEnabled.description'
+  },
+  {
+    id: 'automation.gameflow.ready-check.notification.server-url',
+    route: { name: 'automation', section: 'auto-gameflow' },
+    parentId: 'automation.gameflow.ready-check.notification',
+    labelKey: 'automation.gameflow.ntfyServerUrl.label',
+    descriptionKey: 'automation.gameflow.ntfyServerUrl.description'
+  },
+  {
+    id: 'automation.gameflow.ready-check.notification.topic',
+    route: { name: 'automation', section: 'auto-gameflow' },
+    parentId: 'automation.gameflow.ready-check.notification',
+    labelKey: 'automation.gameflow.ntfyTopic.label',
+    descriptionKey: 'automation.gameflow.ntfyTopic.description'
+  },
+  {
+    id: 'automation.gameflow.ready-check.notification.access-token',
+    route: { name: 'automation', section: 'auto-gameflow' },
+    parentId: 'automation.gameflow.ready-check.notification',
+    labelKey: 'automation.gameflow.ntfyAccessToken.label',
+    descriptionKey: 'automation.gameflow.ntfyAccessToken.description'
+  },
+  {
     id: 'automation.gameflow.auto-honor',
     route: { name: 'automation', section: 'auto-gameflow' },
     labelKey: 'automation.gameflow.sections.autoHonor',

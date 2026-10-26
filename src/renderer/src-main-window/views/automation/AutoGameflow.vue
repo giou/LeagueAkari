@@ -37,6 +37,86 @@
         </SettingsSection>
 
         <SettingsSection
+          setting-id="automation.gameflow.ready-check.notification"
+          :title="t('automation.gameflow.sections.readyCheckNotification')"
+          :footer="t('automation.gameflow.autoAcceptNotifyEnabled.footer')"
+        >
+          <SettingsRow
+            setting-id="automation.gameflow.ready-check.notification.enabled"
+            :label="t('automation.gameflow.common.enabled')"
+            :label-description="t('automation.gameflow.autoAcceptNotifyEnabled.description')"
+            :label-width="260"
+          >
+            <NSwitch
+              :value="store.settings.autoAcceptNotifyEnabled"
+              @update:value="(val) => shard.setAutoAcceptNotifyEnabled(val)"
+              size="small"
+            />
+          </SettingsRow>
+          <SettingsRow
+            setting-id="automation.gameflow.ready-check.notification.server-url"
+            :label="t('automation.gameflow.ntfyServerUrl.label')"
+            :label-description="t('automation.gameflow.ntfyServerUrl.description')"
+            :label-width="260"
+          >
+            <NInput
+              class="w-60!"
+              :value="store.settings.ntfyServerUrl"
+              :disabled="!store.settings.autoAcceptNotifyEnabled"
+              placeholder="https://ntfy.sh"
+              size="small"
+              @update:value="(val) => shard.setNtfyServerUrl(val)"
+            />
+          </SettingsRow>
+          <SettingsRow
+            setting-id="automation.gameflow.ready-check.notification.topic"
+            :label="t('automation.gameflow.ntfyTopic.label')"
+            :label-description="t('automation.gameflow.ntfyTopic.description')"
+            :label-width="260"
+          >
+            <NInput
+              class="w-60!"
+              :value="store.settings.ntfyTopic"
+              :disabled="!store.settings.autoAcceptNotifyEnabled"
+              :placeholder="t('automation.gameflow.ntfyTopic.placeholder')"
+              size="small"
+              @update:value="(val) => shard.setNtfyTopic(val)"
+            />
+          </SettingsRow>
+          <SettingsRow
+            setting-id="automation.gameflow.ready-check.notification.access-token"
+            :label="t('automation.gameflow.ntfyAccessToken.label')"
+            :label-description="t('automation.gameflow.ntfyAccessToken.description')"
+            :label-width="260"
+          >
+            <NInput
+              class="w-60!"
+              type="password"
+              show-password-on="click"
+              :value="store.settings.ntfyAccessToken"
+              :disabled="!store.settings.autoAcceptNotifyEnabled"
+              size="small"
+              @update:value="(val) => shard.setNtfyAccessToken(val)"
+            />
+          </SettingsRow>
+          <SettingsRow
+            setting-id="automation.gameflow.ready-check.notification.test"
+            :label="t('automation.gameflow.sendTestNotification.label')"
+            :label-description="t('automation.gameflow.sendTestNotification.description')"
+            :label-width="260"
+          >
+            <NButton
+              size="small"
+              :loading="sendingTestNotification"
+              :disabled="!store.settings.autoAcceptNotifyEnabled"
+              @click="handleSendTestNotification"
+            >
+              {{ t('automation.gameflow.sendTestNotification.button') }}
+            </NButton>
+          </SettingsRow>
+        </SettingsSection>
+
+        <SettingsSection
           setting-id="automation.gameflow.auto-honor"
           :title="t('automation.gameflow.sections.autoHonor')"
         >
@@ -377,14 +457,16 @@ import {
   NButton,
   NCheckbox,
   NFlex,
+  NInput,
   NInputNumber,
   NPopselect,
   NRadio,
   NRadioGroup,
   NScrollbar,
-  NSwitch
+  NSwitch,
+  useMessage
 } from 'naive-ui'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 const store = useAutoGameflowStore()
 const shard = useInstance(AutoGameflowRenderer)
@@ -408,6 +490,27 @@ const handleChangeInvitationStrategies = (value: string[]) => {
 }
 
 const { t } = useTranslation()
+
+const message = useMessage()
+
+const sendingTestNotification = ref(false)
+
+const handleSendTestNotification = async () => {
+  sendingTestNotification.value = true
+
+  try {
+    await shard.sendTestNotification()
+    message.success(t('automation.gameflow.sendTestNotification.success'))
+  } catch (error) {
+    message.error(
+      t('automation.gameflow.sendTestNotification.failure', {
+        reason: error instanceof Error ? error.message : String(error)
+      })
+    )
+  } finally {
+    sendingTestNotification.value = false
+  }
+}
 
 const queueTypes = computed(() => {
   return {

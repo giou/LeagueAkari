@@ -11,6 +11,7 @@ automation:
       enabled: 开启
     sections:
       readyCheck: 自动接受对局
+      readyCheckNotification: 对局接受通知
       autoHonor: 自动点赞
       playAgain: 返回房间
       autoMatchmaking: 自动匹配
@@ -25,6 +26,26 @@ automation:
     autoAcceptDelaySeconds:
       label: 自动接受对局延时 (s)
       description: 在可接受时延迟执行接受操作的时间，单位为秒
+    autoAcceptNotifyEnabled:
+      label: 推送通知
+      description: 自动接受对局后，在即将进入游戏时通过 ntfy 发送推送通知
+      footer: 使用 ntfy 推送。请在手机的 ntfy 应用中订阅相同的话题；基于 SunUp 的接收端需要 ntfy 兼容订阅，此处不做配置
+    ntfyServerUrl:
+      label: ntfy 服务器
+      description: ntfy 服务器的基础地址，例如 https://ntfy.sh，也支持自建服务器
+    ntfyTopic:
+      label: ntfy 话题
+      description: 推送使用的话题。公共服务器上任何人知道该话题即可读取，请使用较长的随机字符串
+      placeholder: akari-4f9c2b7e
+    ntfyAccessToken:
+      label: 访问令牌
+      description: 可选。当话题受 ntfy 访问控制保护时需要填写
+    sendTestNotification:
+      label: 测试通知
+      description: 使用当前配置发送一条测试通知
+      button: 发送
+      success: 测试通知已发送
+      failure: 发送测试通知失败：{{reason}}
     autoHonorEnabled:
       label: 自动点赞开启
       description: 在游戏结束时，自动用尽票数点赞。

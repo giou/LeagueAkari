@@ -58,6 +58,26 @@ export class AutoGameflowRenderer implements IAkariShardInitDispose {
     return this._settingUtils.set(MAIN_SHARD_NAMESPACE, 'autoAcceptDelaySeconds', seconds)
   }
 
+  setAutoAcceptNotifyEnabled(enabled: boolean) {
+    return this._settingUtils.set(MAIN_SHARD_NAMESPACE, 'autoAcceptNotifyEnabled', enabled)
+  }
+
+  setNtfyServerUrl(url: string) {
+    return this._settingUtils.set(MAIN_SHARD_NAMESPACE, 'ntfyServerUrl', url)
+  }
+
+  setNtfyTopic(topic: string) {
+    return this._settingUtils.set(MAIN_SHARD_NAMESPACE, 'ntfyTopic', topic)
+  }
+
+  setNtfyAccessToken(token: string) {
+    return this._settingUtils.set(MAIN_SHARD_NAMESPACE, 'ntfyAccessToken', token)
+  }
+
+  sendTestNotification() {
+    return this._ipc.call(MAIN_SHARD_NAMESPACE, 'sendTestNotification')
+  }
+
   setAutoReconnectEnabled(enabled: boolean) {
     return this._settingUtils.set(MAIN_SHARD_NAMESPACE, 'autoReconnectEnabled', enabled)
   }

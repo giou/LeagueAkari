@@ -11,6 +11,7 @@ automation:
       enabled: Enable
     sections:
       readyCheck: Auto-Accept Match
+      readyCheckNotification: Match Accepted Notification
       autoHonor: Auto Honor
       playAgain: Play Again
       autoMatchmaking: Auto Matchmaking
@@ -25,6 +26,26 @@ automation:
     autoAcceptDelaySeconds:
       label: Auto-Accept Delay (s)
       description: Delay in seconds before accepting the match after it becomes available.
+    autoAcceptNotifyEnabled:
+      label: Push Notification
+      description: Sends a push notification through ntfy when a match accepted automatically is about to start.
+      footer: Uses ntfy. Subscribe to the same topic in the ntfy app on your phone; SunUp-based receivers need an ntfy-compatible subscription and are not configured here.
+    ntfyServerUrl:
+      label: ntfy Server
+      description: Base URL of the ntfy server, for example https://ntfy.sh. Self-hosted servers are supported.
+    ntfyTopic:
+      label: ntfy Topic
+      description: Topic to publish to. Use a long random value, because anyone who knows the topic can read it on a public server.
+      placeholder: akari-4f9c2b7e
+    ntfyAccessToken:
+      label: Access Token
+      description: Optional bearer token for topics protected by ntfy access control.
+    sendTestNotification:
+      label: Test Notification
+      description: Sends a test notification with the current configuration.
+      button: Send
+      success: Test notification sent
+      failure: 'Failed to send test notification: {{reason}}'
     autoHonorEnabled:
       label: Auto-Honor Enabled
       description: Automatically gives all the votes at the end of a match.
