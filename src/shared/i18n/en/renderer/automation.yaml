@@ -37,6 +37,7 @@ automation:
       label: ntfy Topic
       description: Topic to publish to. Use a long random value, because anyone who knows the topic can read it on a public server.
       placeholder: akari-4f9c2b7e
+      generate: Generate
     ntfyAccessToken:
       label: Access Token
       description: Optional bearer token for topics protected by ntfy access control.

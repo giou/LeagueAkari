@@ -74,14 +74,23 @@
             :label-description="t('automation.gameflow.ntfyTopic.description')"
             :label-width="260"
           >
-            <NInput
-              class="w-60!"
-              :value="store.settings.ntfyTopic"
-              :disabled="!store.settings.autoAcceptNotifyEnabled"
-              :placeholder="t('automation.gameflow.ntfyTopic.placeholder')"
-              size="small"
-              @update:value="(val) => shard.setNtfyTopic(val)"
-            />
+            <NFlex :size="8" align="center">
+              <NInput
+                class="w-60!"
+                :value="store.settings.ntfyTopic"
+                :disabled="!store.settings.autoAcceptNotifyEnabled"
+                :placeholder="t('automation.gameflow.ntfyTopic.placeholder')"
+                size="small"
+                @update:value="(val) => shard.setNtfyTopic(val)"
+              />
+              <NButton
+                size="small"
+                :disabled="!store.settings.autoAcceptNotifyEnabled"
+                @click="handleGenerateNtfyTopic"
+              >
+                {{ t('automation.gameflow.ntfyTopic.generate') }}
+              </NButton>
+            </NFlex>
           </SettingsRow>
           <SettingsRow
             setting-id="automation.gameflow.ready-check.notification.access-token"
@@ -452,6 +461,7 @@ import aramTeamSideMessageImage from '@renderer-shared/assets/automation/aram-te
 import { useInstance } from '@renderer-shared/shards'
 import { AutoGameflowRenderer } from '@renderer-shared/shards/auto-gameflow'
 import { useAutoGameflowStore } from '@renderer-shared/shards/auto-gameflow/store'
+import { generateNtfyTopic } from '@renderer-shared/utils/ntfy-topic'
 import { TranslationComponent, useTranslation } from 'i18next-vue'
 import {
   NButton,
@@ -510,6 +520,10 @@ const handleSendTestNotification = async () => {
   } finally {
     sendingTestNotification.value = false
   }
+}
+
+const handleGenerateNtfyTopic = () => {
+  shard.setNtfyTopic(generateNtfyTopic())
 }
 
 const queueTypes = computed(() => {

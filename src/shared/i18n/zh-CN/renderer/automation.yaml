@@ -37,6 +37,7 @@ automation:
       label: ntfy 话题
       description: 推送使用的话题。公共服务器上任何人知道该话题即可读取，请使用较长的随机字符串
       placeholder: akari-4f9c2b7e
+      generate: 生成
     ntfyAccessToken:
       label: 访问令牌
       description: 可选。当话题受 ntfy 访问控制保护时需要填写
