@@ -29,7 +29,7 @@ automation:
     autoAcceptNotifyEnabled:
       label: Push Notification
       description: Sends a push notification through ntfy when a match accepted automatically is about to start.
-      footer: Uses ntfy. Subscribe to the same topic in the ntfy app on your phone; SunUp-based receivers need an ntfy-compatible subscription and are not configured here.
+      footer: Uses ntfy. Subscribe to the same topic in the ntfy app on your phone.
     ntfyServerUrl:
       label: ntfy Server
       description: Base URL of the ntfy server, for example https://ntfy.sh. Self-hosted servers are supported.

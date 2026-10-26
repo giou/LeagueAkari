@@ -29,7 +29,7 @@ automation:
     autoAcceptNotifyEnabled:
       label: 推送通知
       description: 自动接受对局后，在即将进入游戏时通过 ntfy 发送推送通知
-      footer: 使用 ntfy 推送。请在手机的 ntfy 应用中订阅相同的话题；基于 SunUp 的接收端需要 ntfy 兼容订阅，此处不做配置
+      footer: 使用 ntfy 推送。请在手机的 ntfy 应用中订阅相同的话题
     ntfyServerUrl:
       label: ntfy 服务器
       description: ntfy 服务器的基础地址，例如 https://ntfy.sh，也支持自建服务器
