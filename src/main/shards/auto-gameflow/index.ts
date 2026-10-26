@@ -5,10 +5,12 @@ import { AkariIpcMain } from '../ipc'
 import { LeagueClientMain } from '../league-client'
 import { AkariLogger, LoggerFactoryMain } from '../logger-factory'
 import { MobxUtilsMain } from '../mobx-utils'
+import { NetworkMain } from '../network'
 import { SettingFactoryMain } from '../setting-factory'
 import { SetterSettingService } from '../setting-factory/setter-setting-service'
 import { AutoGameflowActionController } from './action-controller'
 import { AutoGameflowAramTeamSideController } from './aram-team-side-controller'
+import { AutoAcceptNotifier } from './auto-accept-notification'
 import {
   AUTO_GAMEFLOW_HONOR_CATEGORY,
   AUTO_GAMEFLOW_MAIN_NAMESPACE,
@@ -45,6 +47,7 @@ export class AutoGameflowMain implements IAkariShardInitDispose {
   private readonly _context: AutoGameflowMainContext
 
   private readonly _actionController: AutoGameflowActionController
+  private readonly _notifier: AutoAcceptNotifier
   private readonly _matchmaking: AutoGameflowMatchmakingController
   private readonly _lobbyFlow: AutoGameflowLobbyFlowController
   private readonly _invitations: AutoGameflowInvitationController
@@ -57,7 +60,8 @@ export class AutoGameflowMain implements IAkariShardInitDispose {
     settingFactory: SettingFactoryMain,
     private readonly _leagueClient: LeagueClientMain,
     private readonly _mobxUtils: MobxUtilsMain,
-    private readonly _ipc: AkariIpcMain
+    private readonly _ipc: AkariIpcMain,
+    private readonly _network: NetworkMain
   ) {
     this._logger = loggerFactory.create(AutoGameflowMain.id)
     this.state = new AutoGameflowState(this._leagueClient.data, this.settings)
@@ -67,6 +71,25 @@ export class AutoGameflowMain implements IAkariShardInitDispose {
         autoAcceptDelaySeconds: {
           default: this.settings.autoAcceptDelaySeconds,
           schema: z.number()
+        },
+        autoAcceptNotifyEnabled: {
+          default: this.settings.autoAcceptNotifyEnabled,
+          schema: z.boolean()
+        },
+        ntfyServerUrl: {
+          default: this.settings.ntfyServerUrl,
+          schema: z.string(),
+          transform: ({ value }) => value.trim()
+        },
+        ntfyTopic: {
+          default: this.settings.ntfyTopic,
+          schema: z.string(),
+          transform: ({ value }) => value.trim()
+        },
+        ntfyAccessToken: {
+          default: this.settings.ntfyAccessToken,
+          schema: z.string(),
+          transform: ({ value }) => value.trim()
         },
         autoAcceptEnabled: {
           default: this.settings.autoAcceptEnabled,
@@ -157,10 +180,12 @@ export class AutoGameflowMain implements IAkariShardInitDispose {
       settingService: this._settingService,
       leagueClient: this._leagueClient,
       mobxUtils: this._mobxUtils,
-      ipc: this._ipc
+      ipc: this._ipc,
+      network: this._network
     }
 
-    this._actionController = new AutoGameflowActionController(this._context)
+    this._notifier = new AutoAcceptNotifier(this._context)
+    this._actionController = new AutoGameflowActionController(this._context, this._notifier)
     this._matchmaking = new AutoGameflowMatchmakingController(this._context)
     this._lobbyFlow = new AutoGameflowLobbyFlowController(this._context, this._actionController)
     this._invitations = new AutoGameflowInvitationController(this._context)
@@ -169,7 +194,8 @@ export class AutoGameflowMain implements IAkariShardInitDispose {
     this._ipcHandlers = new AutoGameflowIpcHandlers(
       this._context,
       this._actionController,
-      this._matchmaking
+      this._matchmaking,
+      this._notifier
     )
   }
 
@@ -188,6 +214,10 @@ export class AutoGameflowMain implements IAkariShardInitDispose {
 
     this._mobxUtils.propSync(AutoGameflowMain.id, 'settings', this.settings, [
       'autoAcceptDelaySeconds',
+      'autoAcceptNotifyEnabled',
+      'ntfyServerUrl',
+      'ntfyTopic',
+      'ntfyAccessToken',
       'autoAcceptEnabled',
       'autoHonorEnabled',
       'autoHonorStrategy',
@@ -230,6 +260,7 @@ export class AutoGameflowMain implements IAkariShardInitDispose {
     this._ipcHandlers.register()
     this._honorController.watch()
     this._lobbyFlow.watch()
+    this._notifier.watch()
     this._invitations.watch()
     this._matchmaking.watch()
     this._aramTeamSide.watch()

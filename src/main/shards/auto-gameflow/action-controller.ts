@@ -1,6 +1,7 @@
 import { TimeoutTask } from '@main/utils/timer'
 import { formatError } from '@shared/utils/errors'
 
+import type { AutoAcceptNotifier } from './auto-accept-notification'
 import type { AutoGameflowMainContext } from './context'
 
 export class AutoGameflowActionController {
@@ -8,7 +9,10 @@ export class AutoGameflowActionController {
   private readonly _playAgainTask = new TimeoutTask(this._playAgain.bind(this))
   private readonly _reconnectTask = new TimeoutTask(this._reconnect.bind(this))
 
-  constructor(private readonly _context: AutoGameflowMainContext) {}
+  constructor(
+    private readonly _context: AutoGameflowMainContext,
+    private readonly _notifier: AutoAcceptNotifier
+  ) {}
 
   get isAutoAcceptStarted() {
     return this._autoAcceptTask.isStarted
@@ -67,6 +71,7 @@ export class AutoGameflowActionController {
 
     try {
       await leagueClient.api.matchmaking.accept()
+      this._notifier.onAcceptRequestSucceeded()
     } catch (error) {
       ipc.sendEvent(namespace, 'error-accept-match', formatError(error))
 

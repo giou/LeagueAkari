@@ -20,6 +20,11 @@ export class AutoGameflowSettings {
   autoAcceptEnabled: boolean = false
   autoAcceptDelaySeconds: number = 0
 
+  autoAcceptNotifyEnabled: boolean = false
+  ntfyServerUrl: string = 'https://ntfy.sh'
+  ntfyTopic: string = ''
+  ntfyAccessToken: string = ''
+
   autoReconnectEnabled: boolean = false
 
   autoMatchmakingEnabled: boolean = false
@@ -58,6 +63,22 @@ export class AutoGameflowSettings {
 
   setAutoAcceptDelaySeconds(seconds: number) {
     this.autoAcceptDelaySeconds = seconds
+  }
+
+  setAutoAcceptNotifyEnabled(enabled: boolean) {
+    this.autoAcceptNotifyEnabled = enabled
+  }
+
+  setNtfyServerUrl(url: string) {
+    this.ntfyServerUrl = url
+  }
+
+  setNtfyTopic(topic: string) {
+    this.ntfyTopic = topic
+  }
+
+  setNtfyAccessToken(token: string) {
+    this.ntfyAccessToken = token
   }
 
   setAutoReconnectEnabled(enabled: boolean) {

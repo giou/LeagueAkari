@@ -2,6 +2,7 @@ import type { AkariIpcMain } from '../ipc'
 import type { LeagueClientMain } from '../league-client'
 import type { AkariLogger } from '../logger-factory'
 import type { MobxUtilsMain } from '../mobx-utils'
+import type { NetworkMain } from '../network'
 import type { SetterSettingService } from '../setting-factory/setter-setting-service'
 import type { AutoGameflowSettings, AutoGameflowState } from './state'
 
@@ -21,4 +22,5 @@ export interface AutoGameflowMainContext {
   leagueClient: LeagueClientMain
   mobxUtils: MobxUtilsMain
   ipc: AkariIpcMain
+  network: NetworkMain
 }

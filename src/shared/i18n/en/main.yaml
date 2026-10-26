@@ -19,6 +19,12 @@ windowOpenHandler:
 auto-gameflow-main:
   error-auto-honor: 'Auto honor failed: {{reason}}'
   error-accept-match: 'Auto accept match failed: {{reason}}'
+  match-accepted-notification:
+    title: Match accepted
+    body: All players accepted.
+    test-title: League Akari test notification
+    test-body: If you can read this, the ntfy configuration works.
+    missing-configuration: Set the ntfy server and topic first
   error-matchmaking: 'Auto matchmaking could not start: {{reason}}'
   auto-matchmaking-canceled: Auto matchmaking canceled
   auto-matchmaking-canceled-wait-for-invitees: Auto matchmaking canceled, waiting for invitees

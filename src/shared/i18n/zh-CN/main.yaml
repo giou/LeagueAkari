@@ -19,6 +19,12 @@ windowOpenHandler:
 auto-gameflow-main:
   error-auto-honor: 自动点赞失败：{{reason}}
   error-accept-match: 自动接受对局失败：{{reason}}
+  match-accepted-notification:
+    title: 已接受对局
+    body: 所有玩家均已接受
+    test-title: League Akari 测试通知
+    test-body: 如果你能看到这条消息，说明 ntfy 配置可用
+    missing-configuration: 请先填写 ntfy 服务器和话题
   error-matchmaking: 自动匹配无法开始匹配 {{reason}}
   auto-matchmaking-canceled: 自动匹配已取消
   auto-matchmaking-canceled-wait-for-invitees: 自动匹配已取消，等待被邀请者
